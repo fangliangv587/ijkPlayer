@@ -27,6 +27,7 @@ import android.media.TimedText;
 import android.net.Uri;
 import android.os.Build;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 
@@ -363,6 +364,7 @@ public class AndroidMediaPlayer extends AbstractMediaPlayer {
         @Override
         public boolean onInfo(MediaPlayer mp, int what, int extra) {
             AndroidMediaPlayer self = mWeakMediaPlayer.get();
+//            Log.i("xin","android oninfo:"+what);
             return self != null && notifyOnInfo(what, extra);
 
         }

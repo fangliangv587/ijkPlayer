@@ -85,7 +85,7 @@ public class VideoActivity extends AppCompatActivity implements TracksFragment.I
         mSettings = new Settings(this);
 
         // handle arguments
-        mVideoPath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/xz/b.mp4";
+        mVideoPath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/xz/e.mp4";
 
         File file = new File(mVideoPath);
         Log.w("xin","文件存在:"+file.exists());

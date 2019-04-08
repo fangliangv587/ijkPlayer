@@ -1,5 +1,6 @@
 package com.cenco.demo.player.test;
 
+import android.Manifest;
 import android.media.MediaPlayer;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
@@ -10,13 +11,15 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Toast;
 
+import com.cenco.lib.common.PermissionManager;
+import com.kuaifa.lib.kfplayer.ijk.Settings;
 import com.kuaifa.lib.kfplayer.media.KIjkMediaPlayer;
 import com.kuaifa.lib.kfplayer.media.KMediaPlayer;
 
 import java.io.File;
 import java.io.IOException;
 
-public class MainActivity extends AppCompatActivity implements SurfaceHolder.Callback, KMediaPlayer.OnPreparedListener, KMediaPlayer.OnInfoListener, KMediaPlayer.OnCompletionListener, KMediaPlayer.OnSeekCompleteListener {
+public class MainActivity extends AppCompatActivity implements SurfaceHolder.Callback, KMediaPlayer.OnPreparedListener, KMediaPlayer.OnInfoListener, KMediaPlayer.OnCompletionListener, KMediaPlayer.OnSeekCompleteListener, KMediaPlayer.OnErrorListener {
 
     KMediaPlayer mediaPlayer;
     private String mVideoPath;
@@ -26,17 +29,33 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mVideoPath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/xz/b.mp4";
+        PermissionManager manager = new PermissionManager(this);
+        manager.requestPermission(new PermissionManager.PermissionCallback() {
+            @Override
+            public void onGrant() {
+                Log.e("xin","onGrant");
+            }
+
+            @Override
+            public void onDeny() {
+                Log.e("xin","onDeny");
+            }
+        }, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        mVideoPath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/xz/e.mp4";
         if (!new File(mVideoPath).exists()){
             Toast.makeText(this,"文件不存在",Toast.LENGTH_LONG).show();
+            Log.e("xin","文件不存在:"+mVideoPath);
             return;
         }
+//        mVideoPath = "http://ivi.bupt.edu.cn/hls/cctv6.m3u8";
 
-        mediaPlayer = new KIjkMediaPlayer(this);
+//        mediaPlayer = new KIjkMediaPlayer(this, Settings.PV_PLAYER__IjkMediaPlayer);
+        mediaPlayer = new KIjkMediaPlayer(this, Settings.PV_PLAYER__AndroidMediaPlayer);
         mediaPlayer.setOnPreparedListener(this);
         mediaPlayer.setOnInfoListener(this);
         mediaPlayer.setOnCompletionListener(this);
         mediaPlayer.setOnSeekCompleteListener(this);
+        mediaPlayer.setOnErrorListener(this);
         SurfaceView surfaceView = findViewById(R.id.surfaceView);
         surfaceView.getHolder().addCallback(this);
 
@@ -63,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
             mediaPlayer.setDisplay(holder);
             mediaPlayer.setDataSource(mVideoPath);
             mediaPlayer.prepareAsync();
+            Log.v("xin","prepareAsync");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -102,5 +122,11 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
     @Override
     public void onSeekComplete(KMediaPlayer mp) {
         Log.w("xin","onSeekComplete");
+    }
+
+    @Override
+    public boolean onError(KMediaPlayer mp, int what, int extra) {
+        Log.e("xin","onError:what="+what+",extra="+extra);
+        return false;
     }
 }

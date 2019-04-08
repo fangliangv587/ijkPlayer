@@ -19,5 +19,21 @@
         android:text="前进5s"
         android:id="@+id/seekForwardBtn"
         />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/seekForwardBtn"
+        android:text="原生播放器"
+        android:id="@+id/android"
+        />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/android"
+        android:text="ijk播放器"
+        android:id="@+id/ijk"
+        />
 
 </RelativeLayout>

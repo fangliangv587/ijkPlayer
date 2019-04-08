@@ -2,6 +2,7 @@ package com.kuaifa.lib.kfplayer.media;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.SurfaceHolder;
 
 import com.kuaifa.lib.kfplayer.ijk.Settings;
@@ -27,7 +28,12 @@ public class KIjkMediaPlayer implements KMediaPlayer {
 
     public KIjkMediaPlayer(Context context) {
         this.mContext = context;
-        mMediaPlayer = createPlayer(Settings.PV_PLAYER__Auto);
+        mMediaPlayer = createPlayer(Settings.PV_PLAYER__IjkMediaPlayer);
+    }
+
+    public KIjkMediaPlayer(Context context,int type) {
+        this.mContext = context;
+        mMediaPlayer = createPlayer(type);
     }
 
 
@@ -38,17 +44,19 @@ public class KIjkMediaPlayer implements KMediaPlayer {
             case Settings.PV_PLAYER__IjkExoMediaPlayer: {
                 IjkExoMediaPlayer IjkExoMediaPlayer = new IjkExoMediaPlayer(mContext);
                 mediaPlayer = IjkExoMediaPlayer;
+                Log.i("xin","media:ijkexo");
             }
             break;
             case Settings.PV_PLAYER__AndroidMediaPlayer: {
                 AndroidMediaPlayer androidMediaPlayer = new AndroidMediaPlayer();
                 mediaPlayer = androidMediaPlayer;
+                Log.i("xin","media:android");
             }
             break;
             case Settings.PV_PLAYER__IjkMediaPlayer:
             default: {
+                Log.i("xin","media:ijk");
                 IjkMediaPlayer ijkMediaPlayer = null;
-
                     ijkMediaPlayer = new IjkMediaPlayer();
                     ijkMediaPlayer.native_setLogLevel(IjkMediaPlayer.IJK_LOG_DEBUG);
 
