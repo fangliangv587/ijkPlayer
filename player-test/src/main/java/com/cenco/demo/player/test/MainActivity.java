@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
                 Log.e("xin","onDeny");
             }
         }, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        mVideoPath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/xz/f.mp4";
+        mVideoPath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/xz/e.mp4";
         if (!new File(mVideoPath).exists()){
             Toast.makeText(this,"文件不存在",Toast.LENGTH_LONG).show();
             Log.e("xin","文件不存在:"+mVideoPath);
