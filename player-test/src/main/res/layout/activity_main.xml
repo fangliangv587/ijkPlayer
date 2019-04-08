@@ -40,8 +40,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_toLeftOf="@+id/ijk"
-        android:text="ijk-exo播放器"
-        android:id="@+id/ijkexo"
+        android:text="exo播放器"
+        android:id="@+id/exo"
         />
 
 </RelativeLayout>

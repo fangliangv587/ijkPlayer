@@ -22,8 +22,8 @@ import java.io.IOException;
 public class MainActivity extends AppCompatActivity implements SurfaceHolder.Callback, KMediaPlayer.OnPreparedListener, KMediaPlayer.OnInfoListener, KMediaPlayer.OnCompletionListener, KMediaPlayer.OnSeekCompleteListener, KMediaPlayer.OnErrorListener {
 
     KMediaPlayer mediaPlayer;
-    private String mVideoPath;
     SurfaceHolder holder;
+    private String mVideoPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
                 Log.e("xin","onDeny");
             }
         }, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        mVideoPath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/xz/e.mp4";
+        mVideoPath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/xz/f.mp4";
         if (!new File(mVideoPath).exists()){
             Toast.makeText(this,"文件不存在",Toast.LENGTH_LONG).show();
             Log.e("xin","文件不存在:"+mVideoPath);
@@ -50,7 +50,14 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
         }
 //        mVideoPath = "http://ivi.bupt.edu.cn/hls/cctv6.m3u8";
 
-
+////        mediaPlayer = new KIjkMediaPlayer(this, Settings.PV_PLAYER__IjkExoMediaPlayer);//e
+//        mediaPlayer = new KIjkMediaPlayer(this, Settings.PV_PLAYER__IjkMediaPlayer);//f
+////        mediaPlayer = new KIjkMediaPlayer(this, Settings.PV_PLAYER__AndroidMediaPlayer);
+//        mediaPlayer.setOnPreparedListener(this);
+//        mediaPlayer.setOnInfoListener(this);
+//        mediaPlayer.setOnCompletionListener(this);
+//        mediaPlayer.setOnSeekCompleteListener(this);
+//        mediaPlayer.setOnErrorListener(this);
         SurfaceView surfaceView = findViewById(R.id.surfaceView);
         surfaceView.getHolder().addCallback(this);
 
@@ -68,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
                 mediaPlayer.seekTo(seekTo);
             }
         });
+
         findViewById(R.id.android).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,12 +88,13 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
                 player(Settings.PV_PLAYER__IjkMediaPlayer);
             }
         });
-        findViewById(R.id.ijkexo).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.exo).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 player(Settings.PV_PLAYER__IjkExoMediaPlayer);
             }
         });
+
     }
 
     private void player(int type){
@@ -95,22 +104,21 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
                 return;
             }
             if (mediaPlayer!=null){
-                if(mediaPlayer.isPlaying()){
+                if (mediaPlayer.isPlaying()){
                     mediaPlayer.stop();
                 }
                 mediaPlayer.release();
             }
-            mediaPlayer = new KIjkMediaPlayer(this,type);
-//        mediaPlayer = new KIjkMediaPlayer(this, Settings.PV_PLAYER__AndroidMediaPlayer);
+            mediaPlayer = new KIjkMediaPlayer(this, type);//f
             mediaPlayer.setOnPreparedListener(this);
             mediaPlayer.setOnInfoListener(this);
             mediaPlayer.setOnCompletionListener(this);
             mediaPlayer.setOnSeekCompleteListener(this);
             mediaPlayer.setOnErrorListener(this);
-
             mediaPlayer.setDisplay(holder);
             mediaPlayer.setDataSource(mVideoPath);
             mediaPlayer.prepareAsync();
+            Log.v("xin","prepareAsync");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -118,9 +126,8 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-
-            this.holder = holder;
-
+        this.holder = holder;
+        Log.v("xin","surfaceCreated");
     }
 
     @Override
