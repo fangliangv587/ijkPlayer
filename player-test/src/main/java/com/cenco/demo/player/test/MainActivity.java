@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
     KMediaPlayer mediaPlayer;
     private String mVideoPath;
+    SurfaceHolder holder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,13 +50,7 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
         }
 //        mVideoPath = "http://ivi.bupt.edu.cn/hls/cctv6.m3u8";
 
-//        mediaPlayer = new KIjkMediaPlayer(this, Settings.PV_PLAYER__IjkMediaPlayer);
-        mediaPlayer = new KIjkMediaPlayer(this, Settings.PV_PLAYER__AndroidMediaPlayer);
-        mediaPlayer.setOnPreparedListener(this);
-        mediaPlayer.setOnInfoListener(this);
-        mediaPlayer.setOnCompletionListener(this);
-        mediaPlayer.setOnSeekCompleteListener(this);
-        mediaPlayer.setOnErrorListener(this);
+
         SurfaceView surfaceView = findViewById(R.id.surfaceView);
         surfaceView.getHolder().addCallback(this);
 
@@ -73,19 +68,59 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
                 mediaPlayer.seekTo(seekTo);
             }
         });
+        findViewById(R.id.android).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                player(Settings.PV_PLAYER__AndroidMediaPlayer);
+            }
+        });
+        findViewById(R.id.ijk).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                player(Settings.PV_PLAYER__IjkMediaPlayer);
+            }
+        });
+        findViewById(R.id.ijkexo).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                player(Settings.PV_PLAYER__IjkExoMediaPlayer);
+            }
+        });
+    }
 
+    private void player(int type){
+        try {
+            if (holder==null){
+                Log.e("xin","holder is null");
+                return;
+            }
+            if (mediaPlayer!=null){
+                if(mediaPlayer.isPlaying()){
+                    mediaPlayer.stop();
+                }
+                mediaPlayer.release();
+            }
+            mediaPlayer = new KIjkMediaPlayer(this,type);
+//        mediaPlayer = new KIjkMediaPlayer(this, Settings.PV_PLAYER__AndroidMediaPlayer);
+            mediaPlayer.setOnPreparedListener(this);
+            mediaPlayer.setOnInfoListener(this);
+            mediaPlayer.setOnCompletionListener(this);
+            mediaPlayer.setOnSeekCompleteListener(this);
+            mediaPlayer.setOnErrorListener(this);
+
+            mediaPlayer.setDisplay(holder);
+            mediaPlayer.setDataSource(mVideoPath);
+            mediaPlayer.prepareAsync();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        try {
-            mediaPlayer.setDisplay(holder);
-            mediaPlayer.setDataSource(mVideoPath);
-            mediaPlayer.prepareAsync();
-            Log.v("xin","prepareAsync");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+            this.holder = holder;
+
     }
 
     @Override

@@ -1,1 +1,1 @@
-include ':ijkplayer-java', ':ijkplayer-exo', ':player-test', ':kfplayer'
+include  ':player-test', ':kfplayer'
