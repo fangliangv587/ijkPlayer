@@ -41,6 +41,7 @@
         android:layout_alignParentBottom="true"
         android:layout_toLeftOf="@+id/ijk"
         android:text="exo播放器"
+        android:visibility="invisible"
         android:id="@+id/exo"
         />
 
